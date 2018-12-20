@@ -1,59 +1,102 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
-var _react = require('react');
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = require("prop-types");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class JTextField extends _react2.default.Component {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	constructor(props) {
-		super(props);
-		this.handelChange = this.handelChange.bind(this);
-		this.state = {
-			awesome_field: ''
-		};
-	}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	handelChange() {}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	render() {
-		const { validator, onChange, name, placeholder, rules, label, className, onKeyPress, onBlur } = this.props;
-		return _react2.default.createElement(
-			'div',
-			{ className: className },
-			label && _react2.default.createElement(
-				'label',
-				null,
-				label
-			),
-			_react2.default.createElement('input', {
-				name: name,
-				placeholder: placeholder,
-				cols: '33',
-				id: 'name',
-				value: this.state.awesome_field,
-				onChange: e => {
-					this.setState({
-						awesome_field: e.target.value
-					});
-					onChange(e);
-					if (!validator.fieldValid(name)) {
-						validator.showMessages();
-						return;
-					}
-				},
-				onKeyPress: onKeyPress,
-				onBlur: onBlur
-			}),
-			validator.message(name, this.state.awesome_field, rules, 'form__errorlistitem')
-		);
-	}
-}
+var JTextField = function (_React$Component) {
+  _inherits(JTextField, _React$Component);
+
+  function JTextField(props) {
+    _classCallCheck(this, JTextField);
+
+    var _this = _possibleConstructorReturn(this, (JTextField.__proto__ || Object.getPrototypeOf(JTextField)).call(this, props));
+
+    _this.componentDidMount = function () {
+      _this.setState({ awesome_field: _this.props.value });
+    };
+
+    _this.state = {
+      awesome_field: ""
+    };
+    return _this;
+  }
+
+  _createClass(JTextField, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          validator = _props.validator,
+          _onChange = _props.onChange,
+          name = _props.name,
+          placeholder = _props.placeholder,
+          rules = _props.rules,
+          label = _props.label,
+          className = _props.className,
+          onKeyPress = _props.onKeyPress,
+          onBlur = _props.onBlur,
+          value = _props.value;
+
+      return _react2.default.createElement(
+        "div",
+        { className: className },
+        label && _react2.default.createElement(
+          "label",
+          null,
+          label
+        ),
+        _react2.default.createElement("input", {
+          name: name,
+          placeholder: placeholder || "",
+          cols: "33",
+          id: "name",
+          value: this.state.awesome_field,
+          onChange: function onChange(e) {
+            _this2.setState({
+              awesome_field: e.target.value
+            });
+            _onChange(e);
+            if (!validator.fieldValid(name)) {
+              validator.showMessages();
+              return;
+            }
+          },
+          onKeyPress: onKeyPress,
+          onBlur: onBlur
+        }),
+        validator.message(name, this.state.awesome_field, rules)
+      );
+    }
+  }]);
+
+  return JTextField;
+}(_react2.default.Component);
+
+JTextField.propTypes = {
+  validator: _propTypes2.default.object.isRequired,
+  onChange: _propTypes2.default.func.isRequired,
+  name: _propTypes2.default.string.isRequired,
+  rules: _propTypes2.default.string.isRequired
+};
 
 exports.default = JTextField;
