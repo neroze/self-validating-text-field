@@ -1,6 +1,6 @@
 {
   "name": "self-validating-text-field",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Self validating text field",
   "main": "dist/src/self_validating_text_field.js",
   "author": "Jumper",
