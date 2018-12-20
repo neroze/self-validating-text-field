@@ -1,11 +1,13 @@
 {
   "name": "self-validating-text-field",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Self validating text field",
   "main": "dist/src/self_validating_text_field.js",
   "author": "Jumper",
   "license": "MIT",
   "private": false,
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "simple-react-validator": "^1.0.1"
   }
 }
