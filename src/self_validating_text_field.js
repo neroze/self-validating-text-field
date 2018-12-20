@@ -10,44 +10,37 @@ class JTextField extends React.Component {
   }
 
   componentDidMount = () => {
-    this.setState({ awesome_field: this.props.value });
+    this.setState({ awesome_field: this.props.children.props.value });
   };
 
   render() {
     const {
       validator,
-      onChange,
-      name,
-      placeholder,
-      rules,
-      label,
-      className,
-      onKeyPress,
-      onBlur,
-      value
+      children
     } = this.props;
+
+    const { rules, name, label, className} = children.props;
+    const newChild = React.cloneElement(
+      children,
+      {
+        ...children.props,
+        value: this.state.awesome_field,
+        onChange: (e) => {
+          e.persist()
+          this.setState({ awesome_field: e.target.value })
+          children.props.onChange(e);
+          if (!validator.fieldValid(name)) {
+            validator.showMessages();
+            return;
+          }
+        }
+      }
+    )
+
     return (
       <div className={className}>
         {label && <label>{label}</label>}
-        <input
-          name={name}
-          placeholder={placeholder || ""}
-          cols="33"
-          id="name"
-          value={this.state.awesome_field}
-          onChange={e => {
-            this.setState({
-              awesome_field: e.target.value
-            });
-            onChange(e);
-            if (!validator.fieldValid(name)) {
-              validator.showMessages();
-              return;
-            }
-          }}
-          onKeyPress={onKeyPress}
-          onBlur={onBlur}
-        />
+        {newChild}
         {validator.message(name, this.state.awesome_field, rules)}
       </div>
     );
@@ -56,9 +49,7 @@ class JTextField extends React.Component {
 
 JTextField.propTypes = {
   validator: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  rules: PropTypes.string.isRequired
+  onChange: PropTypes.func
 };
 
 export default JTextField;

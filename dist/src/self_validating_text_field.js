@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require("react");
@@ -31,7 +33,7 @@ var JTextField = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (JTextField.__proto__ || Object.getPrototypeOf(JTextField)).call(this, props));
 
     _this.componentDidMount = function () {
-      _this.setState({ awesome_field: _this.props.value });
+      _this.setState({ awesome_field: _this.props.children.props.value });
     };
 
     _this.state = {
@@ -47,16 +49,27 @@ var JTextField = function (_React$Component) {
 
       var _props = this.props,
           validator = _props.validator,
-          _onChange = _props.onChange,
-          name = _props.name,
-          placeholder = _props.placeholder,
-          rules = _props.rules,
-          label = _props.label,
-          className = _props.className,
-          onKeyPress = _props.onKeyPress,
-          onBlur = _props.onBlur,
-          value = _props.value;
+          children = _props.children;
+      var _children$props = children.props,
+          rules = _children$props.rules,
+          name = _children$props.name,
+          label = _children$props.label,
+          className = _children$props.className;
 
+      var newChild = _react2.default.cloneElement(children, _extends({}, children.props, {
+        value: this.state.awesome_field,
+        onChange: function onChange(e) {
+          e.persist();
+          _this2.setState({ awesome_field: e.target.value });
+          children.props.onChange(e);
+          if (!validator.fieldValid(name)) {
+            validator.showMessages();
+            return;
+          }
+        }
+      }));
+
+      // children.props.name = 'updatedName'
       return _react2.default.createElement(
         "div",
         { className: className },
@@ -65,25 +78,7 @@ var JTextField = function (_React$Component) {
           null,
           label
         ),
-        _react2.default.createElement("input", {
-          name: name,
-          placeholder: placeholder || "",
-          cols: "33",
-          id: "name",
-          value: this.state.awesome_field,
-          onChange: function onChange(e) {
-            _this2.setState({
-              awesome_field: e.target.value
-            });
-            _onChange(e);
-            if (!validator.fieldValid(name)) {
-              validator.showMessages();
-              return;
-            }
-          },
-          onKeyPress: onKeyPress,
-          onBlur: onBlur
-        }),
+        newChild,
         validator.message(name, this.state.awesome_field, rules)
       );
     }
@@ -93,10 +88,7 @@ var JTextField = function (_React$Component) {
 }(_react2.default.Component);
 
 JTextField.propTypes = {
-  validator: _propTypes2.default.object.isRequired,
-  onChange: _propTypes2.default.func.isRequired,
-  name: _propTypes2.default.string.isRequired,
-  rules: _propTypes2.default.string.isRequired
+  validator: _propTypes2.default.object.isRequired
 };
 
 exports.default = JTextField;
