@@ -3,12 +3,12 @@ Self Validating test field
 
 ```
 import React, { Fragment } from "react";
-import InputField from "self-validating-text-field";
+import InputField from "self-validating-text-fiel";
 import SimpleReactValidator from "simple-react-validator";
 
 export default class extends React.Component {
   state = {
-    email: "neerooz@gmail.com"
+    email: "hello@world.com"
   };
 
   componentDidMount = () => {
@@ -27,21 +27,23 @@ export default class extends React.Component {
   };
 
   render() {
-    console.log("this.Validator", this.state.validator);
     return (
       <Fragment>
         {this.state.validator && (
           <InputField
-            name="name"
             validator={this.state.validator}
-            placeholder={"Name"}
-            onChange={e => {
-              const { value } = e.target;
-              console.log("----------->", value);
-            }}
-            rules={"required|email"}
-            value={this.state.email}
-          />
+          >
+            <input
+              name="myname"
+              placeholder={"Name"}
+              onChange={e => {
+                const { value } = e.target;
+                console.log("-sdfsdf---------->", value);
+              }}
+              rules={"required|email"}
+              value={this.state.email}
+            />
+          </InputField>
         )}
 
         <button onClick={this.submit}>Submit</button>
@@ -49,5 +51,6 @@ export default class extends React.Component {
     );
   }
 }
+
 
 ```
